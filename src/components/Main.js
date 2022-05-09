@@ -12,6 +12,22 @@ export default class Main extends Component {
     index: -1,
   };
 
+  componentDidMount() {
+    const tarefas = JSON.parse(localStorage.getItem('tarefas'));
+    // checagem
+    if (!tarefas) return;
+
+    this.setState({ tarefas });
+  }
+  // prevState = estado anterior
+  componentDidUpdate(prevProps, prevState) {
+    const { tarefas } = this.state;
+
+    if (tarefas === prevState.tarefas) return;
+
+    localStorage.setItem('tarefas', JSON.stringify(tarefas));
+  }
+
   handleSubmit = (e) => {
     e.preventDefault();
     const { tarefas, index } = this.state;
@@ -29,7 +45,7 @@ export default class Main extends Component {
       });
     } else {
       novasTarefas[index] = novaTarefa;
-      
+
       this.setState({
         tarefas: [...novasTarefas],
         index: -1,
